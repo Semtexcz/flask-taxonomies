@@ -11,6 +11,7 @@
 from __future__ import absolute_import, print_function
 
 import jsonresolver
+from flask import current_app
 from werkzeug.routing import Rule
 
 from flask_taxonomies.models import Taxonomy
@@ -26,7 +27,7 @@ def jsonresolver_loader(url_map):
     url_map.add(Rule(
         "/api/taxonomies/<string:code>/<path:slug>",
         endpoint=get_taxonomy_term,
-        host="localhost"
+        host=current_app.config.get('SERVER_NAME')
     ))
 
 

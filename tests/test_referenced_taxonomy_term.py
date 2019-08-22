@@ -21,5 +21,6 @@ def test_referenced_taxonomy_term(db, root_taxonomy, mkt):
                   'self': 'http://localhost/taxonomies/root/leaf/',
                   'tree': 'http://localhost/taxonomies/root/leaf/?drilldown=True'},
         'path': '/leaf',
-        'slug': 'leaf'
+        'slug': 'leaf',
+        'level': 1
     }

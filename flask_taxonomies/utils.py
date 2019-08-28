@@ -3,8 +3,11 @@
 import json
 
 import six
+import sqlalchemy
 from flask import current_app
 from werkzeug.utils import import_string
+
+from flask_taxonomies.models import TaxonomyTerm
 
 
 def obj_or_import_string(value, default=None):
@@ -45,6 +48,7 @@ def find_in_json(search_term: str, taxonomy, tree_address=("title", 0, "value"))
     expr = sqlalchemy.cast(ed, sqlalchemy.String) == json.dumps(search_term, ensure_ascii=False)
     query = taxonomy.descendants.filter(expr)
     return query
+
 
 def find_in_json_contains(search_term: str, taxonomy, tree_address=("title", 0, "value")):
     """

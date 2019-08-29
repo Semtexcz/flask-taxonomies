@@ -11,7 +11,7 @@ class TestFindInJson:
     def test_successful_find(self, db, root_taxonomy):
         """"""
         print(db.engine.name)
-        if db.engine.name == "sqlite":
+        if db.engine.name != "postgresql":
             pytest.skip("unsupported configuration")
 
         leaf = root_taxonomy.create_term(slug="leaf",
@@ -33,7 +33,7 @@ class TestFindInJson:
         """"""
 
         print(db.engine.name)
-        if db.engine.name == "sqlite":
+        if db.engine.name != "postgresql":
             pytest.skip("unsupported configuration")
 
         leaf = root_taxonomy.create_term(slug="leaf",
@@ -54,7 +54,7 @@ class TestFindInJson:
     def test_successful_find_contains(self, db, root_taxonomy):
         """"""
         print(db.engine.name)
-        if db.engine.name == "sqlite":
+        if db.engine.name != "postgresql":
             pytest.skip("unsupported configuration")
 
         leaf = root_taxonomy.create_term(slug="leaf",
@@ -84,7 +84,7 @@ class TestFindInJson:
         """"""
 
         print(db.engine.name)
-        if db.engine.name == "sqlite":
+        if db.engine.name != "postgresql":
             pytest.skip("unsupported configuration")
 
         leaf = root_taxonomy.create_term(slug="leaf",

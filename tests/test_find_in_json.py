@@ -10,7 +10,6 @@ class TestFindInJson:
 
     def test_successful_find(self, db, root_taxonomy):
         """"""
-        print(db.engine.name)
         if db.engine.name != "postgresql":
             pytest.skip("unsupported configuration")
 
@@ -32,7 +31,6 @@ class TestFindInJson:
     def test_unsuccessful_find(self, db, root_taxonomy):
         """"""
 
-        print(db.engine.name)
         if db.engine.name != "postgresql":
             pytest.skip("unsupported configuration")
 
@@ -53,7 +51,6 @@ class TestFindInJson:
 
     def test_successful_find_contains(self, db, root_taxonomy):
         """"""
-        print(db.engine.name)
         if db.engine.name != "postgresql":
             pytest.skip("unsupported configuration")
 
@@ -83,7 +80,6 @@ class TestFindInJson:
     def test_unsuccessful_find_contains(self, db, root_taxonomy):
         """"""
 
-        print(db.engine.name)
         if db.engine.name != "postgresql":
             pytest.skip("unsupported configuration")
 

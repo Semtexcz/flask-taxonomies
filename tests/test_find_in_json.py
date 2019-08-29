@@ -3,7 +3,15 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from flask_taxonomies.utils import find_in_json, find_in_json_contains
 
+try:
+    import psycopg2
 
+    has_postgres = True
+except ImportError:
+    has_postgres = False
+
+
+@pytest.mark.skipif(not has_postgres, reason="This test works only on Postgres")
 @pytest.mark.usefixtures("db")
 class TestFindInJson:
     """Taxonomy model tests."""

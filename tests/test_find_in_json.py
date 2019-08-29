@@ -3,21 +3,16 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from flask_taxonomies.utils import find_in_json, find_in_json_contains
 
-try:
-    import psycopg2
 
-    has_postgres = True
-except ImportError:
-    has_postgres = False
-
-
-@pytest.mark.skipif(not has_postgres, reason="This test works only on Postgres")
 @pytest.mark.usefixtures("db")
 class TestFindInJson:
     """Taxonomy model tests."""
 
     def test_successful_find(self, db, root_taxonomy):
         """"""
+        print(db.engine.name)
+        if db.engine.name == "sqlite":
+            pytest.skip("unsupported configuration")
 
         leaf = root_taxonomy.create_term(slug="leaf",
                                          extra_data={"title": [
@@ -37,6 +32,10 @@ class TestFindInJson:
     def test_unsuccessful_find(self, db, root_taxonomy):
         """"""
 
+        print(db.engine.name)
+        if db.engine.name == "sqlite":
+            pytest.skip("unsupported configuration")
+
         leaf = root_taxonomy.create_term(slug="leaf",
                                          extra_data={"title": [
                                              {"lang": "cze",
@@ -54,6 +53,9 @@ class TestFindInJson:
 
     def test_successful_find_contains(self, db, root_taxonomy):
         """"""
+        print(db.engine.name)
+        if db.engine.name == "sqlite":
+            pytest.skip("unsupported configuration")
 
         leaf = root_taxonomy.create_term(slug="leaf",
                                          extra_data={
@@ -80,6 +82,10 @@ class TestFindInJson:
 
     def test_unsuccessful_find_contains(self, db, root_taxonomy):
         """"""
+
+        print(db.engine.name)
+        if db.engine.name == "sqlite":
+            pytest.skip("unsupported configuration")
 
         leaf = root_taxonomy.create_term(slug="leaf",
                                          extra_data={

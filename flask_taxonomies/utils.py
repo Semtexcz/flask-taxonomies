@@ -39,7 +39,7 @@ def find_in_json(search_term: str, taxonomy, tree_address=("title", 0, "value"))
     Function returns taxonomy field based on searching term in json tree.
     :param search_term: searched term
     :param taxonomy: Taxonomy class
-    :param tree_address: Address of searched filed. Address is inserted as tuple.
+    :param tree_address: Address of searched field. Address is inserted as tuple.
     :return: SQLAlchemy BaseQuery
     """
     ed = TaxonomyTerm.extra_data
@@ -50,12 +50,12 @@ def find_in_json(search_term: str, taxonomy, tree_address=("title", 0, "value"))
     return query
 
 
-def find_in_json_contains(search_term: str, taxonomy, tree_address=("title", 0, "value")):
+def find_in_json_contains(search_term: str, taxonomy, tree_address="aliases"):
     """
     Function returns taxonomy field based on searching term in json tree.
     :param search_term: searched term
     :param taxonomy: Taxonomy class
-    :param tree_address: Address of searched filed. Address is inserted as tuple.
+    :param tree_address: Address of searched field.
     :return: SQLAlchemy BaseQuery
     """
     expr = sqlalchemy.cast(TaxonomyTerm.extra_data[tree_address], sqlalchemy.String).\

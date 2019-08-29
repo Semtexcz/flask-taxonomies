@@ -58,6 +58,7 @@ def find_in_json_contains(search_term: str, taxonomy, tree_address=("title", 0, 
     :param tree_address: Address of searched filed. Address is inserted as tuple.
     :return: SQLAlchemy BaseQuery
     """
-    expr = sqlalchemy.cast(TaxonomyTerm.extra_data[tree_address], sqlalchemy.String).contains(search_term)
+    expr = sqlalchemy.cast(TaxonomyTerm.extra_data[tree_address], sqlalchemy.String).\
+        contains(search_term)
     query = taxonomy.descendants.filter(expr)
     return query

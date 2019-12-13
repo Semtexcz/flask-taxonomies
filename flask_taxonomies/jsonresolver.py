@@ -31,10 +31,16 @@ def jsonresolver_loader(url_map):
         endpoint=get_taxonomy_term,
         host=current_app.config.get('SERVER_NAME')
     ))
+    taxonomy_ref_host = current_app.config.get('TAXONOMIES_REF_HOST')
+    if taxonomy_ref_host is not None:
+        url_map.add(Rule(
+            "/api/taxonomies/<string:code>/<path:slug>",
+            endpoint=get_taxonomy_term,
+            host=taxonomy_ref_host
+        ))
 
 
 def get_taxonomy_term(code=None, slug=None):
-
     try:
         taxonomy = Taxonomy.get(code)
         term = taxonomy.find_term(slug)

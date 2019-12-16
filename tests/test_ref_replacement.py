@@ -7,7 +7,8 @@ from sqlalchemy.dialects.postgresql import INTEGER, JSONB, TIMESTAMP, UUID
 from sqlalchemy.engine import create_engine
 from sqlalchemy_utils import database_exists, create_database
 
-from flask_taxonomies.cli import db_engine, load_tables, load_data, replace_host, parse_json
+from flask_taxonomies.cli import db_engine, load_tables, load_data, replace_host, parse_json, \
+    database_update
 
 
 @pytest.fixture()
@@ -45,63 +46,12 @@ def test_json():
             'accessRights': 'open',
             'abstract': [
                 {
-                    'name': 'This Master Thesis is focused on analysis of media response to '
-                            'editions '
-                            'Fresh and Raketa of publishing house Labyrint in the context of '
-                            'history '
-                            ' of publishing practice in the Czech Republic in the nineties.'
-                            ' It also discusses contemporary literature for children and youth.'
-                            ' Thesis studies critical media response to three particular books'
-                            ' from studied editions Tajemství oblázkové hory by Bára Dočkalová,'
-                            ' Robinson by Petr Sís and Plyš by Michal Hvorecký.'
-                            ' Novel Plyš by Michal Hvorecký was covered the most in the media. '
-                            'The smallest number of articles was published about'
-                            ' Tajemství oblázkové hory by Bára Dočkalová.'
-                            ' Even though it was nominated for Magnesia Litera Award,'
-                            ' it did not win the price in the end. The closing part'
-                            ' focuses on a unique project by publishing house Labyrint,'
-                            ' a magazine for children called Raketa.'
-                            ' Media attention is focused on creators'
-                            ' of magazine, either it is the owner of publishing house Labyrint '
-                            'Joachim Dvořák or its chief editors Johana Švejdíková and Radana'
-                            ' Litošová.'
-                            'Critical reflection is rare, there are mostly short notes '
-                            'recommending '
-                            ' buying'
-                            ' the magazine or describing a new issue. There is a broad spectrum of'
-                            ' media chosen for'
-                            ' this analysis, from news media to cultural and literary periodical '
-                            'such as Tvar, Host, A2 and catalog Nejlepší knihy dětem.',
+                    'name': 'Test',
                     'lang': 'eng'},
-                dict(name='Diplomová práce se zabývá analýzou mediálního ohlasu edic Fresh a '
-                          'Raketa '
-                          'nakladatelství Labyrint v\n                kontextu vývoje '
-                          'nakladatelské '
-                          'praxe v České republice v devadesátých letech. Věnuje se také '
-                          'současné\n '
-                          'literatuře pro děti a mládež. Součástí práce je kritický '
-                          'ohlas na tři konkrétní díla, jedná se o knihy\n                ze '
-                          'zkoumaných edic Tajemství oblázkové hory Báry Dočkalové, Robinson '
-                          'Petra '
-                          'Síse a Plyš Michala\n                Hvoreckého. Nejčastěji bylo v '
-                          'médiích referováno o románu Plyš slovenského spisovatele Michala\n '
-                          'Hvoreckého. Nejméně příspěvků se věnovalo debutu Báry Dočkalové '
-                          'Tajemství oblázkové hory, který byl sice\n                nominován '
-                          'na '
-                          'cenu Magnesia Litera 2019, nominaci ale neproměnil. Závěrečná část se '
-                          'věnuje unikátnímu\n                projektu nakladatelství Labyrint, '
-                          'kterým je dětský časopis Raketa. Mediální pozornost přitahují '
-                          'zejména\n '
-                          'jeho tvůrci, ať už jde o majitele nakladatelství Joachima '
-                          'Dvořáka nebo šéfredaktorky Johanu Švejdíkovou\n                a '
-                          'Radanu '
-                          'Litošovou. Kritická percepce časopisu se objevuje sporadicky, '
-                          'jedná se '
-                          'zejména o představení\n                časopisu nebo jeho doporučení. '
-                          'Spektrum zkoumaných periodik je široké od zpravodajských webů a '
-                          'deníků '
-                          'až\n                po kulturní a literární periodika Tvar, Host, '
-                          'A2 kulturní čtrnáctideník a katalog Nejlepší knihy dětem.', lang='cze')
+                {
+                    'name': 'Test',
+                    "lang": "cze"
+                }
 
             ],
             'subject': [
@@ -161,63 +111,12 @@ def parsed_json():
             'accessRights': 'open',
             'abstract': [
                 {
-                    'name': 'This Master Thesis is focused on analysis of media response to '
-                            'editions '
-                            'Fresh and Raketa of publishing house Labyrint in the context of '
-                            'history '
-                            ' of publishing practice in the Czech Republic in the nineties.'
-                            ' It also discusses contemporary literature for children and youth.'
-                            ' Thesis studies critical media response to three particular books'
-                            ' from studied editions Tajemství oblázkové hory by Bára Dočkalová,'
-                            ' Robinson by Petr Sís and Plyš by Michal Hvorecký.'
-                            ' Novel Plyš by Michal Hvorecký was covered the most in the media. '
-                            'The smallest number of articles was published about'
-                            ' Tajemství oblázkové hory by Bára Dočkalová.'
-                            ' Even though it was nominated for Magnesia Litera Award,'
-                            ' it did not win the price in the end. The closing part'
-                            ' focuses on a unique project by publishing house Labyrint,'
-                            ' a magazine for children called Raketa.'
-                            ' Media attention is focused on creators'
-                            ' of magazine, either it is the owner of publishing house Labyrint '
-                            'Joachim Dvořák or its chief editors Johana Švejdíková and Radana'
-                            ' Litošová.'
-                            'Critical reflection is rare, there are mostly short notes '
-                            'recommending '
-                            ' buying'
-                            ' the magazine or describing a new issue. There is a broad spectrum of'
-                            ' media chosen for'
-                            ' this analysis, from news media to cultural and literary periodical '
-                            'such as Tvar, Host, A2 and catalog Nejlepší knihy dětem.',
+                    'name': 'Test',
                     'lang': 'eng'},
-                dict(name='Diplomová práce se zabývá analýzou mediálního ohlasu edic Fresh a '
-                          'Raketa '
-                          'nakladatelství Labyrint v\n                kontextu vývoje '
-                          'nakladatelské '
-                          'praxe v České republice v devadesátých letech. Věnuje se také '
-                          'současné\n '
-                          'literatuře pro děti a mládež. Součástí práce je kritický '
-                          'ohlas na tři konkrétní díla, jedná se o knihy\n                ze '
-                          'zkoumaných edic Tajemství oblázkové hory Báry Dočkalové, Robinson '
-                          'Petra '
-                          'Síse a Plyš Michala\n                Hvoreckého. Nejčastěji bylo v '
-                          'médiích referováno o románu Plyš slovenského spisovatele Michala\n '
-                          'Hvoreckého. Nejméně příspěvků se věnovalo debutu Báry Dočkalové '
-                          'Tajemství oblázkové hory, který byl sice\n                nominován '
-                          'na '
-                          'cenu Magnesia Litera 2019, nominaci ale neproměnil. Závěrečná část se '
-                          'věnuje unikátnímu\n                projektu nakladatelství Labyrint, '
-                          'kterým je dětský časopis Raketa. Mediální pozornost přitahují '
-                          'zejména\n '
-                          'jeho tvůrci, ať už jde o majitele nakladatelství Joachima '
-                          'Dvořáka nebo šéfredaktorky Johanu Švejdíkovou\n                a '
-                          'Radanu '
-                          'Litošovou. Kritická percepce časopisu se objevuje sporadicky, '
-                          'jedná se '
-                          'zejména o představení\n                časopisu nebo jeho doporučení. '
-                          'Spektrum zkoumaných periodik je široké od zpravodajských webů a '
-                          'deníků '
-                          'až\n                po kulturní a literární periodika Tvar, Host, '
-                          'A2 kulturní čtrnáctideník a katalog Nejlepší knihy dětem.', lang='cze')
+                {
+                    'name': 'Test',
+                    "lang": "cze"
+                }
 
             ],
             'subject': [
@@ -233,11 +132,13 @@ def parsed_json():
                 {'name': 'edition', 'lang': 'eng'}, {'name': 'media response', 'lang': 'eng'}],
             'id': '398853',
             'provider': {
-                '$ref': 'https://127.0.0.1:8080/api/taxonomies/provider/univerzita_karlova_v_praze'},
+                '$ref': 'https://127.0.0.1:8080/api/taxonomies/provider'
+                        '/univerzita_karlova_v_praze'},
             'doctype': {'$ref': 'https://127.0.0.1:8080/api/taxonomies/doctype/diplomove_prace'},
             'degreeGrantor': [
                 {
-                    '$ref': 'https://127.0.0.1:8080/api/taxonomies/universities/katedra_zurnalistiky'}],
+                    '$ref': 'https://127.0.0.1:8080/api/taxonomies/universities'
+                            '/katedra_zurnalistiky'}],
             'title': [{'name': 'Nakladatelství Labyrint a mediální reflexe edic Fresh a Raketa',
                        'lang': 'cze'}],
             'accessibility': [{'name': 'Dostupné v digitálním repozitáři UK.', 'lang': 'cze'},
@@ -273,7 +174,7 @@ def test_db(test_json):
     conn = engine.connect()
     conn.execute(stmt)
 
-    yield engine
+    yield engine, conn
 
     conn.close()
     metadata.drop_all(bind=engine)
@@ -291,14 +192,13 @@ def test_db_connect(engine):
 
 
 def test_load_tables(test_db):
-    tables = load_tables(test_db)
+    tables = load_tables(test_db[0])
     assert isinstance(tables["records_metadata"], sa.Table)
 
 
 def test_load_data(test_db, test_json):
-    conn = test_db.connect()
-    table = load_tables(test_db)["records_metadata"]
-    data = load_data(conn, table)
+    table = load_tables(test_db[0])["records_metadata"]
+    data = load_data(test_db[1], table)
     row = data.fetchone()
     assert row[3] == test_json
 
@@ -313,3 +213,17 @@ def test_parse_json(test_json, parsed_json):
     json_ = json.loads(test_json)
     parsed_json = json.loads(parsed_json)
     assert parse_json(json_, '127.0.0.1:8080') == parsed_json
+
+
+def test_database_update(test_db, parsed_json):
+    parsed_json = json.loads(parsed_json)
+    table = load_tables(test_db[0])["records_metadata"]
+    data = load_data(test_db[1], table)
+    row = data.fetchone()
+    id_ = row[2]
+    database_update(table, test_db[1], id_, parsed_json)
+
+    updated_data = load_data(test_db[1], table)
+    updated_row = updated_data.fetchone()
+    print(updated_row[3])
+    assert updated_row[3] == json.dumps(parsed_json, ensure_ascii=False)

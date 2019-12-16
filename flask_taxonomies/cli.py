@@ -1,4 +1,5 @@
 import click
+import sqlalchemy as sa
 from flask import current_app
 from flask.cli import with_appcontext
 from invenio_access import ActionSystemRoles, any_user
@@ -78,3 +79,63 @@ def delete_taxonomy(code):
     t = Taxonomy.get(code)
     db.session.delete(t)
     db.session.commit()
+
+
+@taxonomies.command('replace-ref-host')
+@click.option('-h', '--host', help='Replace host in $ref statements')
+def replace_host(host):
+    print(host)
+
+
+# TODO: logger
+
+# Connect to database
+def db_engine(dialect: str = 'postgresql', database: str = 'oarepo', username: str = 'oarepo',
+              password: str = 'oarepo', host_: str = 'localhost', port: str = '5432') -> object:
+    """
+    Return SQLAlchemy engine
+    :return:
+    :rtype:
+    :return:
+    :rtype:
+    :param dialect:
+    :param database:
+    :param username:
+    :param password:
+    :param host_:
+    :param port:
+    :return: SQLAlchemy engine
+    """
+    # dialect + driver: // username: password @ host:port / database
+    opts = f'{dialect}://{username}:{password}@{host_}:{port}/{database}'
+    return sa.create_engine(opts)
+
+
+def db_connect(engine):
+    """
+    Returns db connection
+    :param engine:
+    :type engine: SQLAlchemy engine
+    :return: SQLAlchemy connection
+    """
+    return engine.connect()
+
+
+def load_tables(engine):
+    metadata = sa.MetaData()
+    metadata.reflect(bind=engine)
+    return metadata.tables
+
+
+# TODO: parsování JSON
+# TODO: vyhledání všech $ref
+# TODO: parsování URL
+# TODO: nahrazení hosta
+# TODO: update databáze
+# TODO: hlavní program - for cyklus
+# TODO: ukončení databáze
+
+if __name__ == "__main__":
+    engine = db_engine()
+    tables = load_tables(engine)
+    print(tables)

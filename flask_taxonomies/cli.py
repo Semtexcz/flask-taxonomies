@@ -1,4 +1,5 @@
 import click
+from urllib.parse import urlparse, urlunparse
 import sqlalchemy as sa
 from flask.cli import with_appcontext
 from invenio_access import ActionSystemRoles, any_user
@@ -131,19 +132,35 @@ def load_data(connection, table):
     return connection.execute(s)
 
 
+def parse_json(json_):
+    for k, v in json_.items():
+        if "$ref" in v:
+            if isinstance(v, list):
+                pass
+            if isinstance(v, dict):
+                pass
+            print(k, v)
+
+
+def replace_host(ref_object, new_host):
+    url = urlparse(ref_object["$ref"])
+    new_url = url._replace(netloc=new_host)
+    return {'$ref': urlunparse(new_url)}
+
+
 # TODO: parsování JSON
 # TODO: vyhledání všech $ref
-# TODO: parsování URL
 # TODO: nahrazení hosta
 # TODO: update databáze
 # TODO: hlavní program - for cyklus
 # TODO: ukončení databáze
 
 if __name__ == "__main__":
-    engine = db_engine()
-    tables = load_tables(engine)
-    data = load_data(db_connect(engine), tables["records_metadata"])
-    row = data.fetchone()
-    json = row[3]
-    parse_json(json)
-    print(json)
+    # engine = db_engine()
+    # tables = load_tables(engine)
+    # data = load_data(db_connect(engine), tables["records_metadata"])
+    # row = data.fetchone()
+    # json = row[3]
+    # parse_json(json)
+    # print(json)
+    print(replace_host({'$ref': 'https://nusl2.test.ntkcz.cz/api/taxonomies/subject/PSH7020'}, 'localhost:8080'))

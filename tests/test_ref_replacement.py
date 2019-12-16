@@ -7,7 +7,12 @@ from sqlalchemy.dialects.postgresql import INTEGER, JSONB, TIMESTAMP, UUID
 from sqlalchemy.engine import create_engine
 from sqlalchemy_utils import database_exists, create_database
 
-from flask_taxonomies.cli import db_engine, load_tables, load_data
+from flask_taxonomies.cli import db_engine, load_tables, load_data, replace_host
+
+
+@pytest.fixture()
+def ref_object():
+    return {'$ref': 'https://localhost/api/taxonomies/subject/PSH7020'}
 
 
 @pytest.fixture()
@@ -179,3 +184,9 @@ def test_load_data(test_db, test_json):
     data = load_data(conn, table)
     row = data.fetchone()
     assert row[3] == test_json
+
+
+def test_replace_host(ref_object):
+    assert replace_host(ref_object, '127.0.0.1:8080') == {
+        "$ref": "https://127.0.0.1:8080/api/taxonomies/subject/PSH7020"
+    }

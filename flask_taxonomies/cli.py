@@ -1,10 +1,9 @@
 import click
 import sqlalchemy as sa
-from flask import current_app
 from flask.cli import with_appcontext
 from invenio_access import ActionSystemRoles, any_user
-from invenio_accounts.models import Role, User
 from invenio_db import db
+from sqlalchemy.sql import select
 
 #
 # Taxonomies commands
@@ -127,6 +126,11 @@ def load_tables(engine):
     return metadata.tables
 
 
+def load_data(connection, table):
+    s = select([table])
+    return connection.execute(s)
+
+
 # TODO: parsování JSON
 # TODO: vyhledání všech $ref
 # TODO: parsování URL
@@ -138,4 +142,8 @@ def load_tables(engine):
 if __name__ == "__main__":
     engine = db_engine()
     tables = load_tables(engine)
-    print(tables)
+    data = load_data(db_connect(engine), tables["records_metadata"])
+    row = data.fetchone()
+    json = row[3]
+    parse_json(json)
+    print(json)

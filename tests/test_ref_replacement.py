@@ -1,14 +1,20 @@
-import uuid
 import json
+import uuid
 
 import pytest
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import INTEGER, JSONB, TIMESTAMP, UUID
 from sqlalchemy.engine import create_engine
-from sqlalchemy_utils import database_exists, create_database
+from sqlalchemy_utils import create_database, database_exists
 
-from flask_taxonomies.cli import db_engine, load_tables, load_data, replace_host, parse_json, \
-    database_update
+from flask_taxonomies.cli import (
+    database_update,
+    db_engine,
+    load_data,
+    load_tables,
+    parse_json,
+    replace_host,
+)
 
 
 @pytest.fixture()
@@ -185,10 +191,20 @@ def engine():
     return db_engine()
 
 
+def test_db_engine():
+    return db_engine()
+
+
 def test_db_connect(engine):
     conn = engine.connect()
     assert conn.connection.is_valid
     conn.close()
+
+
+def test_db_connect_2():
+    engine = db_engine(username="blbost")
+    with pytest.raises(sa.exc.OperationalError):
+        conn = engine.connect()
 
 
 def test_load_tables(test_db):
@@ -226,4 +242,9 @@ def test_database_update(test_db, parsed_json):
     updated_data = load_data(test_db[1], table)
     updated_row = updated_data.fetchone()
     print(updated_row[3])
-    assert updated_row[3] == json.dumps(parsed_json, ensure_ascii=False)
+    assert updated_row[3] == parsed_json
+
+# TODO: writer test for replace_ref_host http://click.palletsprojects.com/en/5.x/testing/
+# def test_replace_ref_host(test_db):
+#     replace_ref_host(
+#         '127.0.0.1:8080', 'postgres', 'test', 'oarepo', 'localhost', 'oarepo', True)

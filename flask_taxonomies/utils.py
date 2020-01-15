@@ -5,8 +5,7 @@ import json
 import six
 import sqlalchemy
 from flask import current_app
-from werkzeug.utils import cached_property
-from werkzeug.utils import import_string
+from werkzeug.utils import cached_property, import_string
 
 from flask_taxonomies.models import TaxonomyTerm
 

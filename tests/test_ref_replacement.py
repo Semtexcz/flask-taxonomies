@@ -244,7 +244,7 @@ def test_database_update(test_db, parsed_json):
     print(updated_row[3])
     assert updated_row[3] == parsed_json
 
-# TODO: writer test for replace_ref_host http://click.palletsprojects.com/en/5.x/testing/
+# TODO: write test for replace_ref_host http://click.palletsprojects.com/en/5.x/testing/
 # def test_replace_ref_host(test_db):
 #     replace_ref_host(
 #         '127.0.0.1:8080', 'postgres', 'test', 'oarepo', 'localhost', 'oarepo', True)

@@ -5,6 +5,7 @@ import json
 import six
 import sqlalchemy
 from flask import current_app
+from werkzeug.utils import cached_property
 from werkzeug.utils import import_string
 
 from flask_taxonomies.models import TaxonomyTerm
@@ -58,7 +59,29 @@ def find_in_json_contains(search_term: str, taxonomy, tree_address="aliases"):
     :param tree_address: Address of searched field.
     :return: SQLAlchemy BaseQuery
     """
-    expr = sqlalchemy.cast(TaxonomyTerm.extra_data[tree_address], sqlalchemy.String).\
+    expr = sqlalchemy.cast(TaxonomyTerm.extra_data[tree_address], sqlalchemy.String). \
         contains(search_term)
     query = taxonomy.descendants.filter(expr)
     return query
+
+
+class Constants:
+    @cached_property
+    def server_name(self):
+        return current_app.config.get('SERVER_NAME')
+
+
+constants = Constants()
+
+
+def link_self(taxonomy_code, taxonomy_term):
+    """
+    Function returns reference to the taxonomy from taxonomy code and taxonomy term.
+    :param taxonomy_code:
+    :param taxonomy_term:
+    :return:
+    """
+    SERVER_NAME = constants.server_name
+    base = f"https://{SERVER_NAME}/api/taxonomies"
+    path = [base, taxonomy_code + "/" + taxonomy_term.slug]
+    return "/".join(path)

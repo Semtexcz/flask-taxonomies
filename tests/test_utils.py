@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.orm.exc import NoResultFound
 
-from flask_taxonomies.utils import find_in_json, find_in_json_contains
+from flask_taxonomies.utils import find_in_json, find_in_json_contains, link_self
 
 
 @pytest.mark.usefixtures("db")
@@ -14,10 +14,13 @@ class TestFindInJson:
             pytest.skip("unsupported configuration")
 
         leaf = root_taxonomy.create_term(slug="leaf",
-                                         extra_data={"title": [
-                                             {"lang": "cze",
-                                              "value": "Filozofie"}
-                                         ]
+                                         extra_data={
+                                             "title": [
+                                                 {
+                                                     "lang": "cze",
+                                                     "value": "Filozofie"
+                                                 }
+                                             ]
                                          }
                                          )
 
@@ -35,10 +38,13 @@ class TestFindInJson:
             pytest.skip("unsupported configuration")
 
         leaf = root_taxonomy.create_term(slug="leaf",
-                                         extra_data={"title": [
-                                             {"lang": "cze",
-                                              "value": "Filozofie"}
-                                         ]
+                                         extra_data={
+                                             "title": [
+                                                 {
+                                                     "lang": "cze",
+                                                     "value": "Filozofie"
+                                                 }
+                                             ]
                                          }
                                          )
 
@@ -105,3 +111,13 @@ class TestFindInJson:
         query = find_in_json_contains("Invalid query", root_taxonomy, tree_address="aliases")
         with pytest.raises(NoResultFound):
             query.one()
+
+
+def test_link_self(db, root_taxonomy):
+    leaf = root_taxonomy.create_term(slug="leaf",
+                                     extra_data="extra_data")
+
+    db.session.refresh(root_taxonomy)
+    db.session.refresh(leaf)
+
+    assert link_self("root", leaf) == "https://localhost/api/taxonomies/root/leaf"

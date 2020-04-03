@@ -95,41 +95,6 @@ def convert_data_to_dict(data, int_conversions={}, str_args={}, bool_args={}):
         yield unflatten_list(ret)
 
 
-# def convert_data_to_dict(data, int_conversions={}, str_args={}, bool_args={}):
-#     header = [x.split() if x else None for x in data[0]]
-#     for block in read_data_blocks(data[1:]):
-#         ret = {}
-#         for block_row in block:
-#             converted_row = {}
-#             for arridx, prop_path, val in zip(range(0, len(header)), header, block_row):
-#                 if not prop_path:
-#                     continue
-#                 if ' '.join(prop_path) in int_conversions:
-#                     val = int(val) if val else None
-#                 elif ' '.join(prop_path) in str_args:
-#                     val = val if val else ""
-#                 elif ' '.join(prop_path) in bool_args:
-#                     if val != '':
-#                         val = val == 'True'
-#                     else:
-#                         continue
-#
-#                 for part in reversed(prop_path):
-#                     if part[0] == '@':
-#                         val = {part[1:]: [val]}
-#                     else:
-#                         val = {part: val}
-#
-#                 # merge converted_row with val, merge items in arrays
-#                 piecewise_merge(converted_row, val,
-#                                 list_update=lambda target, source: target[0].update(source[0]))
-#
-#             # merge converted_row into ret, but handle arrays this time
-#             piecewise_merge(ret, converted_row,
-#                             list_update=lambda target, source: target.extend(source))
-#         yield ret
-
-
 def piecewise_merge(target, source, list_update):
     if isinstance(target, list):
         list_update(target, source)

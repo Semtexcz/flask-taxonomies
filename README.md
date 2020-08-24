@@ -1387,17 +1387,17 @@ If ``.can`` on any of the permissions returns True or the list is empty, access 
 The recommended initial settings are read-only for everyone except admin role:
 
 ```python
-from flask_principal import RoleNeed
+from flask_principal import RoleNeed, Permission
 
 FLASK_TAXONOMIES_PERMISSION_FACTORIES = {
-    'taxonomy_create': [RoleNeed('admin')],
-    'taxonomy_update': [RoleNeed('admin')],
-    'taxonomy_delete': [RoleNeed('admin')],
+    'taxonomy_create': [Permission(RoleNeed('admin'))],
+    'taxonomy_update': [Permission(RoleNeed('admin'))],
+    'taxonomy_delete': [Permission(RoleNeed('admin'))],
 
-    'taxonomy_term_create': [RoleNeed('admin')],
-    'taxonomy_term_update': [RoleNeed('admin')],
-    'taxonomy_term_delete': [RoleNeed('admin')],
-    'taxonomy_term_move': [RoleNeed('admin')]
+    'taxonomy_term_create': [Permission(RoleNeed('admin'))],
+    'taxonomy_term_update': [Permission(RoleNeed('admin'))],
+    'taxonomy_term_delete': [Permission(RoleNeed('admin'))],
+    'taxonomy_term_move': [Permission(RoleNeed('admin'))]
 }
 ```
 
